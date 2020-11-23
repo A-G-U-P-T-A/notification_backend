@@ -49,6 +49,13 @@ public class NotificationController {
         return fileService.getLogs();
     }
 
+    @CrossOrigin
+    @GetMapping(value = "/deletelogs")
+    public @ResponseBody String deleteAllLogs() {
+        fileService.emptyList();
+        return "DELETED";
+    }
+
     @PreDestroy
     public void shutdown() {
         executor.shutdown();

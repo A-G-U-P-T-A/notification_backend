@@ -15,6 +15,8 @@ public class FileService {
     }
 
     public void emptyList() {
+        if(message==null||message.size()==0)
+            return;
         message.clear();
     }
 
