@@ -17,12 +17,18 @@ public class NotificationService {
     ConfigLoaderService configLoaderService;
 
     public void sendNotification(Notification[] notifications) {
+        int timePassed = 0;
         for (int i=0;i<notifications.length;i++) {
             Notification notification = notifications[i];
             String template = configLoaderService.getTemplateFromId(notification.getTemplateId());
             template = template.replaceAll("<customer.name>", notification.getTo()).replaceAll("<employee.name>", notification.getFrom());
             template = template + " type: " + notification.getType();
-            fileService.postDelayed(notification.getSendTime()*60000, template);
+            if(i==0)
+                fileService.postDelayed(notification.getSendTime()*60000, template);
+            else{
+                timePassed+=notifications[i-1].getSendTime();
+                fileService.postDelayed((notification.getSendTime()-timePassed)*60000, template);
+            }
         }
     }
 
